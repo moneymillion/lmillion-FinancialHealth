@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provide Current Financial Status</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="form-container">
+        <form id="financialDataForm">
+            <h1>Financial Health Input</h1>
+
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="monthlyIncome">Monthly Income</label>
+            <input type="number" id="monthlyIncome" name="monthlyIncome" required>
+
+            <label for="monthlyExpenses">Monthly Expenses</label> <!-- Added Monthly Expenses input -->
+            <input type="number" id="monthlyExpenses" name="monthlyExpenses" required>
+
+            <label for="totalSavings">Total Savings</label>
+            <input type="number" id="totalSavings" name="totalSavings" required>
+
+            <label for="totalDebt">Total Debt (Excluding Auto)</label>
+            <input type="number" id="totalDebt" name="totalDebt" required>
+
+            <label for="monthlySavings">Monthly Savings</label>
+            <input type="number" id="monthlySavings" name="monthlySavings" required>
+
+            <label for="monthlyDebtPayment">Monthly Debt Payment</label>
+            <input type="number" id="monthlyDebtPayment" name="monthlyDebtPayment" required>
+
+            <label for="typesOfInvestments">Types of Investments</label>
+            <input type="text" id="typesOfInvestments" name="typesOfInvestments" required>
+
+            <label for="emergencyFundAmount">Emergency Fund Amount</label>
+            <input type="number" id="emergencyFundAmount" name="emergencyFundAmount" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div id="financialHealthAnalysisContainer" class="analysis-box">
+        <h1>Financial Health Analysis</h1>
+        <div id="financialHealthAnalysis" class="analysis-container" style="display: none;">
+            <!-- Dynamic content will be filled here by JavaScript -->
+        </div>
+    </div>
+
+    <div id="financialHealthStatusContainer" class="analysis-box" style="display: none;">
+        <div class="progress-bar-container">
+            <div id="financialHealthStatusBar" class="progress-bar" style="width: 0%;"></div>
+            <!-- Optionally, you can add a label for the progress bar here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

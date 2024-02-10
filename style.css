@@ -1,0 +1,159 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: #f7f7f7;
+    margin: 10;
+    text-align: center;
+}
+
+#financialHealthAnalysisContainer {
+    display: none;
+}
+
+.form-container {
+    background: #fff;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input[type="text"],
+input[type="number"],
+button {
+    font-size: 16px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #007aff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0051a8;
+}
+
+label {
+    text-align: left;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+h1 {
+    color: #333;
+}
+
+.analysis-container {
+    margin-top: 30px;
+}
+
+.analysis-box {
+    background: #fff;
+    margin: 0 auto;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 400px;
+    border-radius: 8px;
+    text-align: center; /* Ensure content is centered */
+}
+
+
+.metric-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px;
+}
+
+.metric-name {
+    font-weight: bold;
+}
+
+.circle-blob {
+    width: 60px; /* Increased size */
+    height: 60px; /* Increased size */
+    border-radius: 50%;
+    background: #007aff;
+    color: white;
+    margin: 10px; /* Adjusted spacing */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px; /* Adjust font size as needed */
+}
+
+
+.financial-health-status-heading {
+    font-size: 1.5em; /* Bigger font for heading */
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* ... existing CSS ... */
+
+.financial-health-status-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.progress-bar-container {
+    background-color: #eee;
+    border-radius: 5px;
+    position: relative;
+    height: 20px; /* Set a fixed height for the progress bar container */
+}
+
+.progress-bar {
+    background-color: #4caf50;
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease-in-out;
+}
+
+.progress-bar-percentage {
+    margin-top: 5px; /* Spacing between the progress bar and the percentage label */
+}
+
+/* Existing CSS for base styles */
+/* ...Your current CSS code... */
+
+/* Styles for tablets and above */
+@media (min-width: 768px) {
+    .form-container, .analysis-box {
+        padding: 20px;
+        font-size: 16px;
+    }
+}
+
+/* Styles for desktops and above */
+@media (min-width: 992px) {
+    .form-container, .analysis-box {
+        padding: 30px;
+        font-size: 18px;
+        width: 50%; /* Adjust the width to better fit larger screens */
+        margin: 0 auto; /* Center the containers */
+    }
+}
+
+/* Styles for large screens and TVs */
+@media (min-width: 1200px) {
+    .form-container, .analysis-box {
+        padding: 40px;
+        font-size: 20px;
+        width: 40%;
+    }
+}
