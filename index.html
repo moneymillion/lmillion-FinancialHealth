@@ -12,31 +12,31 @@
             <h1>Financial Health Input</h1>
 
             <label for="age">Age</label>
-            <input type="number" id="age" name="age" required>
+            <input type="number" id="age" name="age" placeholder="How old is the indivitual/ business?" min="0" step="0.01" required>
 
             <label for="monthlyIncome">Monthly Income</label>
-            <input type="number" id="monthlyIncome" name="monthlyIncome" required>
+            <input type="number" id="monthlyIncome" name="monthlyIncome" placeholder="Total Monthly Income" min="0" step="0.01" required>
 
             <label for="monthlyExpenses">Monthly Expenses</label> <!-- Added Monthly Expenses input -->
-            <input type="number" id="monthlyExpenses" name="monthlyExpenses" required>
+            <input type="number" id="monthlyExpenses" name="monthlyExpenses" placeholder="Total Monthly Expenses" min="0" step="0.01"required>
 
             <label for="totalSavings">Total Savings</label>
-            <input type="number" id="totalSavings" name="totalSavings" required>
+            <input type="number" id="totalSavings" name="totalSavings" placeholder="Total Savings (Excluding Emergency Fund)" min="0" step="0.01"required>
 
-            <label for="totalDebt">Total Debt (Excluding Auto)</label>
-            <input type="number" id="totalDebt" name="totalDebt" required>
+            <label for="totalDebt">Total Debt (Excluding Auto/ Mortgage)</label>
+            <input type="number" id="totalDebt" name="totalDebt" placeholder="Total Debt (Excluding Auto/ Mortgage)" min="0" step="0.01" required>
 
             <label for="monthlySavings">Monthly Savings</label>
-            <input type="number" id="monthlySavings" name="monthlySavings" required>
+            <input type="number" id="monthlySavings" name="monthlySavings" placeholder="Total Monthly Savings" min="0" step="0.01"required>
 
             <label for="monthlyDebtPayment">Monthly Debt Payment</label>
-            <input type="number" id="monthlyDebtPayment" name="monthlyDebtPayment" required>
+            <input type="number" id="monthlyDebtPayment" name="monthlyDebtPayment" placeholder="Total Monthly Debt Payment" min="0" step="0.01"required>
 
             <label for="typesOfInvestments">Types of Investments</label>
-            <input type="text" id="typesOfInvestments" name="typesOfInvestments" required>
+            <input type="text" id="typesOfInvestments" name="typesOfInvestments" placeholder="Investment Types separated by ',' (i.e: TFSA, RRSP)" required>
 
             <label for="emergencyFundAmount">Emergency Fund Amount</label>
-            <input type="number" id="emergencyFundAmount" name="emergencyFundAmount" required>
+            <input type="number" id="emergencyFundAmount" name="emergencyFundAmount" placeholder="Total Emergency Funds Amount" min="0" step="0.01"required>
 
             <button type="submit">Submit</button>
         </form>
@@ -44,17 +44,30 @@
 
     <div id="financialHealthAnalysisContainer" class="analysis-box">
         <h1>Financial Health Analysis</h1>
-        <div id="financialHealthAnalysis" class="analysis-container" style="display: none;">
-            <!-- Dynamic content will be filled here by JavaScript -->
-        </div>
-    </div>
 
-    <div id="financialHealthStatusContainer" class="analysis-box" style="display: none;">
-        <div class="progress-bar-container">
-            <div id="financialHealthStatusBar" class="progress-bar" style="width: 0%;"></div>
-            <!-- Optionally, you can add a label for the progress bar here -->
-        </div>
-    </div>
+    <!-- Place this section where you want the Financial Health Analysis to appear -->
+  <div id="financialHealthAnalysis" class="financial-health-analysis">
+      <table id="financialHealthTable">
+          <thead>
+              <tr>
+                  <th>Metric</th>
+                  <th>Result</th>
+                  <th>Score</th>
+              </tr>
+          </thead>
+          <tbody>
+              <!-- Metric rows will be inserted here by JavaScript -->
+          </tbody>
+      </table>
+      <div class="average-score-container">
+          <h1>Financial Health Score</h1>
+          <h3> <span id="averageScoreText"> </span> </h3>
+          <h5> <div class="empty-space"> </div> </h5>
+          <div id="averageScoreProgress" class="progress-bar"></div>
+      </div>
+  </div>
+  </div>
+
 
     <script src="script.js"></script>
 </body>

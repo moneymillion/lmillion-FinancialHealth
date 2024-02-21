@@ -1,23 +1,56 @@
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.getElementById('financialDataForm');
   form.addEventListener('submit', function(event) {
-      event.preventDefault();
+    event.preventDefault();
 
-      const formData = new FormData(form);
-      const userData = {};
-      formData.forEach((value, key) => {
-          userData[key] = !isNaN(parseFloat(value)) ? parseFloat(value) : value;
-      });
+    const formData = new FormData(form);
+    const userData = {};
+    formData.forEach((value, key) => {
+      userData[key] = !isNaN(parseFloat(value)) ? parseFloat(value) : value;
+    });
 
-      // Extracted logic for calculations
-      const analysisResults = calculateAnalysisResults(userData);
+    // Validate "Types of Investments"
+    const investmentsInput = document.getElementById('typesOfInvestments');
+    const investmentsValue = investmentsInput.value;
+    if (/^\d+$/.test(investmentsValue)) {
+      alert('Type of Investments cannot contain only numbers. Retry using this format: TFSA, BOND, DIVIDEND STOCKS, etc...');
+      investmentsInput.style.borderColor = 'red';
+      return;
+    } else {
+      investmentsInput.style.borderColor = 'green';
+    }
+
+    // Validate numeric inputs
+    const inputs = document.querySelectorAll('input[type=number]');
+    let isValid = true;
+    inputs.forEach(input => {
+      const value = parseFloat(input.value);
+      if (!isNaN(value) && value >= parseFloat(input.min)) {
+        input.style.borderColor = 'green';
+      } else {
+        input.style.borderColor = 'red';
+        isValid = false;
+      }
+    });
+
+    if (!isValid) {
+      alert('Please correct the highlighted fields.');
+      return;
+    }
+
+    // Proceed if all inputs are valid
+    const analysisResults = calculateAnalysisResults(userData);
 
       // Correctly toggle visibility of the analysis container
-      const analysisContainer = document.getElementById('financialHealthAnalysisContainer');
-      analysisContainer.style.display = 'block'; // Show the container with the header and results
-
-      displayFinancialHealthAnalysis(analysisResults);
-  });
+      // Now we can safely access the element since the DOM is fully loaded
+   const analysisContainer = document.getElementById('financialHealthAnalysisContainer');
+   if (analysisContainer) {
+     analysisContainer.style.display = 'block'; // Show the container
+     displayFinancialHealthAnalysis(analysisResults); // Call your function to display the results
+   } else {
+     console.error('Element #financialHealthAnalysisContainer not found');
+   }
+ });
 });
 
   function calculateAnalysisResults(userData) {
@@ -33,10 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
               result: calculateSavingsRateResult(userData),
               score: calculateSavingsRateScore(userData.monthlySavings, userData.monthlyIncome)
           },
-          'Debt-to-Income Ratio': {
-              result: calculateDebtIncomeRatioResult(userData),
-              score: calculateDebtIncomeRatioScore(userData.totalDebt, userData.monthlyIncome)
-          },
+          'Debt-to-Income Ratio': calculateDebtIncomeRatioResult(userData),
           'Emergency Fund Status': emergencyFundStatus,
           'Investment Diversity': {
               result: calculateInvestmentDiversityResult(userData),
@@ -55,12 +85,34 @@ function calculateSavingsRateScore(monthlySavings, monthlyIncome) {
 }
 
 function calculateDebtIncomeRatioResult(userData) {
-    return `${(userData.totalDebt / userData.monthlyIncome * 100).toFixed(2)}%`;
+    const basicMonthsToPayOffDebt = userData.totalDebt / userData.monthlyDebtPayment;
+    const monthlyLeftover = Math.max(0, userData.monthlyIncome - userData.monthlyExpenses - userData.monthlyDebtPayment);
+    const enhancedMonthlyPayment = userData.monthlyDebtPayment + monthlyLeftover;
+    const enhancedMonthsToPayOffDebt = userData.totalDebt / enhancedMonthlyPayment;
+    const yearsLeft = 75 - userData.age;
+    const monthsLeft = yearsLeft * 12;
+
+    const analysis1 = basicMonthsToPayOffDebt;
+    const analysis2 = monthlyLeftover > 0 ? enhancedMonthsToPayOffDebt : basicMonthsToPayOffDebt;
+    const analysis3 = Math.min(analysis1, monthsLeft);
+
+    // Instead of calculating an average score, directly calculate the average months to pay off debt
+    const averageMonthsToPayOffDebt = (analysis1 + analysis2 + analysis3) / 3;
+
+    // Adjust the return object to focus on average months to pay off debt
+    return {
+        result: `${averageMonthsToPayOffDebt.toFixed(2)} months`,
+        score: calculateDebtIncomeRatioScore(averageMonthsToPayOffDebt, monthsLeft) // Ensure this function calculates score appropriately
+    };
 }
 
-function calculateDebtIncomeRatioScore(totalDebt, monthlyIncome) {
-    return calculateScore(totalDebt / monthlyIncome);
+function calculateDebtIncomeRatioScore(averageMonthsToPayOffDebt, monthsLeft) {
+    // Adjust the score calculation if necessary to ensure it reflects the desired insights
+    let score = 100 * (1 - (averageMonthsToPayOffDebt / monthsLeft));
+    score = Math.min(Math.max(score, 0), 100); // Ensure score is between 0 and 100
+    return score.toFixed(2); // Format score to 2 decimal places
 }
+
 
 function calculateEmergencyFundStatusResult(emergencyFundAmount, monthlyExpenses) {
     // Calculate how many months the emergency fund can cover
@@ -106,43 +158,33 @@ function calculateScore(value) {
 }
 
 function displayFinancialHealthAnalysis(results) {
-    const analysisSection = document.getElementById('financialHealthAnalysis');
-    if (!analysisSection) {
-        console.error('Analysis section not found');
-        return;
-    }
-    analysisSection.innerHTML = '';
+    const analysisTable = document.getElementById('financialHealthTable').getElementsByTagName('tbody')[0];
+    analysisTable.innerHTML = ''; // Clear existing rows
 
     let totalScore = 0;
     let countMetrics = 0;
 
     Object.keys(results).forEach(metric => {
-        const metricContainer = document.createElement('div');
-        metricContainer.classList.add('metric-container');
+        let row = analysisTable.insertRow();
 
-        const metricName = document.createElement('div');
-        metricName.classList.add('metric-name');
-        metricName.textContent = metric;
+        let cellMetric = row.insertCell(0);
+        cellMetric.textContent = metric;
 
-        const resultCircle = document.createElement('div');
-        resultCircle.classList.add('circle-blob');
-        // Ensure results are displayed as percentages
-        resultCircle.textContent = `Result: ${parseFloat(results[metric].result).toFixed(2)}%`;
+        let cellResult = row.insertCell(1);
+        cellResult.innerHTML = `<div class="result-circle">${results[metric].result}</div>`;
 
-        const scoreCircle = document.createElement('div');
-        scoreCircle.classList.add('circle-blob');
-        scoreCircle.textContent = `Score: ${parseFloat(results[metric].score).toFixed(2)}%`;
-
-        metricContainer.appendChild(metricName);
-        metricContainer.appendChild(resultCircle);
-        metricContainer.appendChild(scoreCircle);
-        analysisSection.appendChild(metricContainer);
+        let cellScore = row.insertCell(2);
+        cellScore.innerHTML = `<div class="score-circle">${results[metric].score}%</div>`;
 
         totalScore += parseFloat(results[metric].score);
         countMetrics++;
     });
 
     const averageScore = totalScore / countMetrics;
+    document.getElementById('averageScoreText').textContent = `Average Score: ${averageScore.toFixed(2)}%`;
+    const averageScoreProgress = document.getElementById('averageScoreProgress');
+    averageScoreProgress.style.width = `${averageScore.toFixed(2)}%`;
+
 
     // Append the Financial Health Status heading and progress bar only if they do not already exist
     let financialHealthStatusHeading = analysisSection.querySelector('.financial-health-status-heading');

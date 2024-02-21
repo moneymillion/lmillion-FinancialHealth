@@ -157,3 +157,64 @@ h1 {
         width: 40%;
     }
 }
+
+input[type=number]:invalid {
+  border: 2px solid red;
+}
+
+input[type=number]:valid {
+  border: 2px solid green;
+}
+
+.financial-health-analysis table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.financial-health-analysis th, .financial-health-analysis td {
+    border: 1px solid #000;
+    text-align: center;
+    padding: 8px;
+}
+
+.result-circle, .score-circle {
+    border-radius: 50%;
+    color: #fff;
+    padding: 10px;
+    display: inline-block;
+    margin: 5px;
+}
+
+.result-circle {
+    background-color: #3498db; /* Replace with your color */
+}
+
+.score-circle {
+    background-color: #2ecc71; /* Replace with your color */
+}
+
+.average-score-container {
+  border: 1px solid #000;
+  text-align: center;
+  padding: 8px;
+  line-height: 1.6; /* Example value, adjust as needed */
+
+}
+
+.average-score-text {
+    /* Adjust line-height to control the space within the text line */
+    line-height: 1.6;
+    display: block; /* Makes it take up the full width, allowing for margin to be effective */
+    margin-bottom: 20px; /* Adjust as needed to match space above the progress bar */
+}
+
+.empty-space {
+    height: -5px; /* This can be any height you wish to give to the space */
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #2ecc71; /* Replace with your color */
+    width: 0;
+    transition: width 0.5s;
+}
